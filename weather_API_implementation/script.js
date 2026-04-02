@@ -1,9 +1,7 @@
-// Configuration and Constants
-const WEATHER_API_KEY = 'f71eca7665413b040afb4b4e38d297b2'; // Replace with your API key
+const WEATHER_API_KEY = 'fd01f8d2b2ea2700aedb437c69ef50c3';
 const WEATHER_API_URL = 'https://api.openweathermap.org/data/2.5/weather';
 const PLACEHOLDER_API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-// Global state to store saved locations
 let savedLocations = [];
 
 // DOM Elements
@@ -14,11 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
         tab.addEventListener('click', () => {
             const tabId = tab.getAttribute('data-tab');
 
-            // Update active tab
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
-            // Update active content
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
@@ -284,7 +280,6 @@ async function updateLocation() {
     }
 
     try {
-        // Create the updated location object
         const locationData = {
             id,
             title: name,
