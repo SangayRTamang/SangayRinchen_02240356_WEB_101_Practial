@@ -1,18 +1,21 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api',
+  baseURL: 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json',
-  },
+    'Cache-Control': 'no-cache',
+  }
 });
 
-// Add a request interceptor to attach the auth token to every request
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    // ✅ Guard localStorage access — it doesn't exist on the server
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
     }
     return config;
   },

@@ -9,14 +9,15 @@ import './globals.css';
 import MainLayout from '../components/layout/MainLayout';
 
 export default function RootLayout({ children }) {
-   const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000, // 1 minute
-      refetchOnWindowFocus: false,
+  // ✅ useState ensures queryClient is only created once
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+        refetchOnWindowFocus: false,
+      },
     },
-  },
-});
+  }));
 
   return (
     <html lang="en">

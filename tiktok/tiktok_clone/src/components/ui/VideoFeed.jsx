@@ -13,13 +13,9 @@ const VideoFeed = ({ feedType = 'forYou' }) => {
   const { isAuthenticated } = useAuth();
   const [loadMoreRef, isLoadMoreVisible] = useIntersectionObserver();
 
-  // Query key includes the feed type to cache separately
   const queryKey = ['videos', feedType];
-  
-  // Select the appropriate fetch function based on feed type
   const fetchFn = feedType === 'following' ? getFollowingVideos : getVideos;
   
-  // Set up infinite query
   const {
     data,
     error,
@@ -29,20 +25,24 @@ const VideoFeed = ({ feedType = 'forYou' }) => {
     status,
   } = useInfiniteQuery({
     queryKey,
-    queryFn: ({ pageParam }) => fetchFn({ cursor: pageParam }),
-    initialPageParam: null, // Start with no cursor
-    getNextPageParam: (lastPage) => lastPage.pagination.nextCursor,
-    enabled: feedType !== 'following' || isAuthenticated, // Don't fetch following feed if not authenticated
+    queryFn: ({ pageParam }) => {
+      console.log('Fetching with pageParam:', pageParam); // debug
+      return fetchFn({ cursor: pageParam });
+    },
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage?.pagination?.nextCursor ?? undefined,
+    // ✅ Fixed: forYou always enabled, following requires auth
+    enabled: feedType === 'forYou' ? true : isAuthenticated === true,
   });
 
-  // Load more when the load more element becomes visible
+  // ✅ Single useEffect for load more — removed duplicate
   useEffect(() => {
     if (isLoadMoreVisible && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [isLoadMoreVisible, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [isLoadMoreVisible]);
 
-  // Handle errors with toast
+  // ✅ Re-enabled error toast
   useEffect(() => {
     if (error) {
       toast.error('Failed to load videos. Please try again.');
@@ -50,8 +50,7 @@ const VideoFeed = ({ feedType = 'forYou' }) => {
     }
   }, [error]);
 
-  // Show loading state
-  if (status === 'pending' && !data) {
+  if (status === 'pending') {
     return (
       <div className="flex justify-center py-10">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></div>
@@ -59,8 +58,7 @@ const VideoFeed = ({ feedType = 'forYou' }) => {
     );
   }
 
-  // Show error state
-  if (status === 'error' && !data) {
+  if (status === 'error') {
     return (
       <div className="text-center py-10">
         <p className="text-red-500">Failed to load videos</p>
@@ -74,7 +72,6 @@ const VideoFeed = ({ feedType = 'forYou' }) => {
     );
   }
 
-  // Show empty state for following feed
   if (feedType === 'following' && data?.pages[0]?.videos.length === 0) {
     return (
       <div className="text-center py-10">
@@ -85,7 +82,6 @@ const VideoFeed = ({ feedType = 'forYou' }) => {
     );
   }
 
-  // Flatten all pages of videos
   const videos = data?.pages.flatMap((page) => page.videos) || [];
 
   if (videos.length === 0) {
@@ -98,24 +94,20 @@ const VideoFeed = ({ feedType = 'forYou' }) => {
 
   return (
     <div className="space-y-10">
-      {/* Render all videos */}
       {videos.map((video, index) => (
-  <VideoCard key={`${video.id}-${index}`} video={video} />
-))}
+        <VideoCard key={`${video.id}-${index}`} video={video} />
+      ))}
       
-      {/* Loading indicator for next page */}
       {isFetchingNextPage && (
         <div className="flex justify-center py-5">
           <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></div>
         </div>
       )}
       
-      {/* Load more trigger element */}
       {hasNextPage && !isFetchingNextPage && (
         <div ref={loadMoreRef} className="h-20" />
       )}
       
-      {/* End of feed message */}
       {!hasNextPage && videos.length > 0 && (
         <div className="text-center py-5 text-gray-500">
           You've reached the end of the feed.

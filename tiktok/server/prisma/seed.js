@@ -38,6 +38,24 @@ async function main() {
 
   // Create 50 videos (5 per user)
   console.log('Creating videos...');
+
+  // Real working sample videos
+    const sampleVideos = [
+      'https://www.w3schools.com/html/mov_bbb.mp4',
+      'https://www.w3schools.com/html/movie.mp4',
+      'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+      'https://samplelib.com/lib/preview/mp4/sample-10s.mp4',
+      'https://samplelib.com/lib/preview/mp4/sample-15s.mp4',
+    ];
+
+    const sampleThumbnails = [
+      'https://picsum.photos/336/600?random=1',
+      'https://picsum.photos/336/600?random=2',
+      'https://picsum.photos/336/600?random=3',
+      'https://picsum.photos/336/600?random=4',
+      'https://picsum.photos/336/600?random=5',
+    ];
+
   const videos = [];
   for (let i = 0; i < users.length; i++) {
     for (let j = 1; j <= 5; j++) {
@@ -46,8 +64,8 @@ async function main() {
           userId: users[i].id,
           title: `Video ${j} from ${users[i].username}`,
           description: `This is video ${j} from user ${users[i].username}`,
-          videoUrl: `https://example.com/videos/user${users[i].id}_video${j}.mp4`,
-          thumbnail: `https://example.com/thumbnails/user${users[i].id}_video${j}.jpg`,
+          videoUrl: sampleVideos[(j - 1) % sampleVideos.length], //  real URLs
+        thumbnail: sampleThumbnails[(j - 1) % sampleThumbnails.length], //  real thumbnails
         }
       });
       videos.push(video);

@@ -158,7 +158,7 @@ export default function FileUploadForm() {
             id="name"
             type="text" 
             {...register('name', { required: 'Name is required' })}
-            className="w-full p-2 border rounded" 
+            className="w-full p-*2 border rounded" 
           />
           {/* Display name field validation errors */}
           {errors.name && <p className="text-red-500 mt-1">{errors.name.message}</p>}

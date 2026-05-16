@@ -14,10 +14,7 @@ router.get('/:id/comments', videoController.getVideoComments);
 
 
 // Protected routes 
-router.post('/', protect, upload.fields([
-  { name: 'video', maxCount: 1 }, 
-  { name: 'thumbnail', maxCount: 1 }
-]), videoController.createVideo);
+router.post('/', protect, videoController.createVideo);
 
 router.put('/:id', protect, videoController.updateVideo);
 router.delete('/:id', protect, videoController.deleteVideo);
