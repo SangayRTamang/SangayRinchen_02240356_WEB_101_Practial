@@ -227,7 +227,7 @@ export default function ProfilePage() {
   const isOwnProfile = isAuthenticated && currentUser?.id === parseInt(userId);
 
   return (
-    <div className="max-w-4xl mx-auto py-8">
+    <div className="max-w-4xl mx-auto py-8c">
       {/* Profile header */}
       <div className="flex items-start mb-8">
         {isEditing ? (

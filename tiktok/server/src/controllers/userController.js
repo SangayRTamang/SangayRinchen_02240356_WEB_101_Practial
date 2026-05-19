@@ -17,7 +17,7 @@ exports.getAllUsers = async (req, res) => {
         _count: {
           select: {
             videos: true,
-            followedBy: true,
+            followers: true,
             following: true
           }
         }
@@ -49,7 +49,7 @@ exports.getUserById = async (req, res) => {
         _count: {
           select: {
             videos: true,
-            followedBy: true,
+            followers: true,
             following: true
           }
         }
@@ -424,12 +424,13 @@ exports.followUser = async (req, res) => {
     const followerCount = await prisma.follow.count({
       where: {
         followingId: parseInt(id)
+
       }
     });
     
     res.status(200).json({ 
       message: 'User followed successfully',
-      followerCount
+      followerCount:user._count.followers
     });
   } catch (error) {
     console.error('Error following user:', error);

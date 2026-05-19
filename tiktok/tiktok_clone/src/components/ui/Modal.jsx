@@ -45,7 +45,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
         >
           <IoMdClose size={24} />
         </button>
-        <h2 className="mb-4 text-xl font-bold">{title}</h2>
+        <h2 className="mb-4 text-xl text-black font-bold">{title}</h2>
         {children}
       </div>
     </div>

@@ -6,8 +6,9 @@ import { useAuth } from '../../contexts/authContext';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-  // Redirect to login if not authenticated
+  
   export default function FollowingPage() {
+    // Redirect to login if not authenticated
     const { isAuthenticated, loading } = useAuth();
     const router = useRouter();
 
@@ -28,7 +29,7 @@ import toast from 'react-hot-toast';
     }
 
     return (
-      <main className="flex min-h-screen flex-col items-center">
+      <main className="flex min-h-screen flex-col items-center bg-black-500">
         <VideoFeed feedType="following" />
       </main>
     );

@@ -23,7 +23,7 @@ const MainLayout = ({ children }) => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className="fixed left-0 top-0 flex h-full w-64 flex-col border-r bg-white p-4">
+      <div className="fixed left-0 top-0 flex h-full w-64 flex-col border-r bg-black p-4">
         <div className="mb-8">
           <Link href="/" className="text-xl font-bold text-blue-500">
             TikTok
@@ -38,7 +38,7 @@ const MainLayout = ({ children }) => {
                 className={`flex items-center rounded-lg p-2 ${
                   pathname === "/"
                     ? "bg-blue-50 text-blue-500"
-                    : "hover:bg-gray-100"
+                    : "text-white-700 hover:bg-gray-100"
                 }`}
               >
                 <FaHome className="mr-3" /> For You
@@ -50,7 +50,7 @@ const MainLayout = ({ children }) => {
                 className={`flex items-center rounded-lg p-2 ${
                   pathname === "/following"
                     ? "bg-blue-50 text-blue-500"
-                    : "hover:bg-gray-100"
+                    : "text-white-700 hover:bg-gray-100"
                 }`}
               >
                 <FaUsers className="mr-3" /> Following
@@ -62,7 +62,7 @@ const MainLayout = ({ children }) => {
                   className={`flex items-center rounded-lg p-2 ${
                     pathname === "/explore-users"
                       ? "bg-blue-50 text-blue-500"
-                      : "hover:bg-gray-100"
+                      : "text-white-700 hover:bg-gray-100"
                   }`}
                 >
                   <FaUsers className="mr-3" /> Find Users
@@ -74,7 +74,7 @@ const MainLayout = ({ children }) => {
                 className={`flex items-center rounded-lg p-2 ${
                   pathname === "/explore"
                     ? "bg-blue-50 text-blue-500"
-                    : "hover:bg-gray-100"
+                    : "text-white-700 hover:bg-gray-100"
                 }`}
               >
                 <FaCompass className="mr-3" /> Explore
@@ -86,7 +86,7 @@ const MainLayout = ({ children }) => {
                 className={`flex items-center rounded-lg p-2 ${
                   pathname === "/live"
                     ? "bg-blue-50 text-blue-500"
-                    : "hover:bg-gray-100"
+                    : "text-white-700 hover:bg-gray-100"
                 }`}
               >
                 <FaVideo className="mr-3" /> LIVE
@@ -106,13 +106,13 @@ const MainLayout = ({ children }) => {
               </Link>
               <Link
                 href={`/profile/${user?.id}`}
-                className="mb-2 flex items-center rounded-lg p-2 hover:bg-gray-100"
+                className="mb-2 flex items-center rounded-lg p-2 text-white-700 hover:bg-gray-100"
               >
                 <FaUser className="mr-3" /> Profile
               </Link>
               <button
                 onClick={logout}
-                className="flex w-full items-center rounded-lg p-2 hover:bg-gray-100"
+                className="flex w-full items-center rounded-lg p-2 text-white-700 hover:bg-gray-100"
               >
                 <FaSignOutAlt className="mr-3" /> Logout
               </button>

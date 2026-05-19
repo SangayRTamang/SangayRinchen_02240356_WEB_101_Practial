@@ -162,74 +162,74 @@ exports.getVideoById = async (req, res) => {
   }
 };
 
-exports.getUserVideos = async (req, res) => {
-  try {
-    // Remove the query params - just get all videos for the user
-    const response = await apiClient.get(`/users/${userId}/videos`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching videos for user ${userId}:`, error);
-    throw error;
-  }
-};
-
-// Get videos by user
 // exports.getUserVideos = async (req, res) => {
 //   try {
-//     const { id } = req.params;
-    
-//     // Check if user exists
-//     const userExists = await prisma.user.findUnique({
-//       where: { id: parseInt(id) },
-//     });
-    
-//     if (!userExists) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-    
-//     // Get user's videos
-//     const videos = await prisma.video.findMany({
-//       where: {
-//         userId: parseInt(id),
-//       },
-//       orderBy: {
-//         createdAt: 'desc',
-//       },
-//       include: {
-//         user: {
-//           select: {
-//             id: true,
-//             username: true,
-//             name: true,
-//             avatar: true,
-//           },
-//         },
-//         _count: {
-//           select: {
-//             comments: true,
-//             likes: true,
-//           },
-//         },
-//       },
-//     });
-    
-//     // Format videos with count data
-//     const formattedVideos = videos.map(video => ({
-//       ...video,
-//       likeCount: video._count.likes,
-//       commentCount: video._count.comments,
-//       _count: undefined,
-//     }));
-    
-//     res.status(200).json({
-//       videos: formattedVideos,
-//       totalVideos: videos.length
-//     });
+//     // Remove the query params - just get all videos for the user
+//     const response = await apiClient.get(`/users/${userId}/videos`);
+//     return response.data;
 //   } catch (error) {
-//     console.error(`Error getting videos for user ${req.params.id}:`, error);
-//     res.status(500).json({ message: 'Server error' });
+//     console.error(`Error fetching videos for user ${userId}:`, error);
+//     throw error;
 //   }
 // };
+
+// Get videos by user
+exports.getUserVideos = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Check if user exists
+    const userExists = await prisma.user.findUnique({
+      where: { id: parseInt(id) },
+    });
+    
+    if (!userExists) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Get user's videos
+    const videos = await prisma.video.findMany({
+      where: {
+        userId: parseInt(id),
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            avatar: true,
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+            likes: true,
+          },
+        },
+      },
+    });
+    
+    // Format videos with count data
+    const formattedVideos = videos.map(video => ({
+      ...video,
+      likeCount: video._count.likes,
+      commentCount: video._count.comments,
+      _count: undefined,
+    }));
+    
+    res.status(200).json({
+      videos: formattedVideos,
+      totalVideos: videos.length
+    });
+  } catch (error) {
+    console.error(`Error getting videos for user ${req.params.id}:`, error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 // Get videos for following feed
 exports.getFollowingVideos = async (req, res) => {

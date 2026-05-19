@@ -62,10 +62,9 @@ async function main() {
       const video = await prisma.video.create({
         data: {
           userId: users[i].id,
-          title: `Video ${j} from ${users[i].username}`,
-          description: `This is video ${j} from user ${users[i].username}`,
-          videoUrl: sampleVideos[(j - 1) % sampleVideos.length], //  real URLs
-        thumbnail: sampleThumbnails[(j - 1) % sampleThumbnails.length], //  real thumbnails
+          caption: `Video ${j} from ${users[i].username}`,
+          videoUrl: sampleVideos[(j - 1) % sampleVideos.length],
+          thumbnailUrl: sampleThumbnails[(j - 1) % sampleThumbnails.length],
         }
       });
       videos.push(video);
